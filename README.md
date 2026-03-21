@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #  Docker Compose – Complete Guide 
 
 ##  What is Docker Compose?
@@ -602,4 +601,139 @@ Removes unused containers, networks, images, and volumes.
 *Dangerous**: deletes everything not actively used.
 
 ---
->>>>>>> 177ef9031b165723821b8d1a43ee4b7dc1c20a14
+# FastAPI + Redis Cache (Docker Compose Project)
+
+## Overview
+
+This project demonstrates a **FastAPI application** integrated with **Redis caching** , fully containerized using Docker Compose.
+
+---
+
+## Tech Stack
+
+- FastAPI (Python)
+- Redis (Cache)
+- Docker & Docker Compose
+
+---
+
+## Features
+
+- Async FastAPI application
+- Redis-based caching layer
+- Multi-stage Docker build (optimized)
+- Environment-based configuration
+- Persistent Redis storage using volumes
+
+---
+
+
+## How It Works
+
+### Cache Flow
+
+1. Client hits `/data`
+2. App checks Redis cache
+3. If cache miss → simulate DB call
+4. Store result in Redis
+5. Return response
+
+---
+
+## Architecture
+
+```
+
+Client → FastAPI → Redis Cache
+↓
+(DB simulated)
+
+````
+
+---
+
+## Environment Variables
+
+`.env` file:
+
+```env
+REDIS_HOST=redis
+REDIS_PORT=6379
+CACHE_TTL=60
+````
+
+---
+
+## Docker Setup
+
+### Multi-stage Build
+
+* Stage 1 → Install dependencies
+* Stage 2 → Lightweight runtime image
+
+---
+
+## Run the Application
+
+```bash
+docker compose up -d --build
+```
+
+---
+
+## Access the App
+
+* API: [http://localhost:8000](http://localhost:8000)
+* Endpoint: [http://localhost:8000/data](http://localhost:8000/data)
+
+---
+
+## Test API
+
+```bash
+curl http://localhost:8000/data
+```
+
+---
+
+## Sample Response
+
+### First Request
+
+```json
+{
+  "source": "db",
+  "data": {
+    "value": "This is fresh data"
+  }
+}
+```
+
+### Next Request
+
+```json
+{
+  "source": "cache",
+  "data": {
+    "value": "This is fresh data"
+  }
+}
+```
+
+---
+
+## Redis Persistence
+
+* Uses **named volume**
+* Data stored in `/data`
+* AOF enabled for durability
+
+---
+
+## Best Practices Used
+
+* Multi-stage Docker build
+* Non-root container user
+* Environment-based config
+* Redis not tightly coupled
+---
