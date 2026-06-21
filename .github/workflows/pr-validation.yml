@@ -18,3 +18,4 @@ jobs:
       - name: Validate
         run: |
           echo "PR validation successful"
+          exit 1
